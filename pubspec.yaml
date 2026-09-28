@@ -1,0 +1,39 @@
+name: firebase_kits_demo
+description: "End-to-end test app for firebase_auth_kit, firestore_kit and dartnative_firebase on the awahymn Firebase project."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.12.0-192.0.dev
+
+# Plain version deps: `dn pub get` resolves DartNative packages from your
+# installed SDK (closed resolution) — no registry setup, works offline.
+dependencies:
+  dartnative: ^1.0.0
+  dartnative_ios: ^1.0.0
+  dartnative_android: ^1.0.0
+  dartnative_skia: ^1.0.0
+  # DartNative's own Firebase slice (Core / Crashlytics / Messaging), the
+  # web view for hosted sign-in pages and the secure store for sessions.
+  dartnative_firebase: ^1.0.0
+  dartnative_webview: ^1.0.0
+  dartnative_secure_storage: ^1.0.0
+  # The two kits under test.
+  firebase_auth_kit:
+    path: ../firebase_auth_kit
+  firestore_kit:
+    path: ../firestore_kit
+
+dev_dependencies:
+  lints: ^6.0.0
+  image: ^4.0.0
+
+dartnative_skia:
+  variant: full
+
+dartnative:
+  assets:
+    - assets/dn-logo.png
+
+# Branded launch splash + app icon: add the dartnative_splash plugin from
+# dartpub.dev, then see tool/generate_app_assets.dart.

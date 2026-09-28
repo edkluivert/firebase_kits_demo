@@ -1,0 +1,25 @@
+# Firebase configuration files are per project: add your own (see README).
+ios/Runner/GoogleService-Info.plist
+android/app/google-services.json
+
+# Dart / DartNative build output
+.dart_tool/
+build/
+pubspec.lock
+pubspec_overrides.yaml
+dn_plugins.lock
+*.iml
+.idea/
+
+# iOS
+ios/Pods/
+ios/Podfile.lock
+ios/.symlinks/
+ios/DartNative/
+ios/Runner.xcworkspace/xcuserdata/
+ios/Runner.xcodeproj/xcuserdata/
+
+# Android
+android/.gradle/
+android/local.properties
+android/app/.cxx/

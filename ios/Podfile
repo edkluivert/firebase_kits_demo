@@ -1,0 +1,54 @@
+# Uncomment this line to define a global platform for your project
+platform :ios, '15.0'
+
+# CocoaPods analytics sends network stats synchronously affecting build latency.
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
+
+def dn_root
+  generated_xcode_build_settings_path = File.expand_path(File.join('..', 'DartNative', 'Generated.xcconfig'), __FILE__)
+  unless File.exist?(generated_xcode_build_settings_path)
+    raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure \"dn pub get\" is executed first"
+  end
+
+  File.foreach(generated_xcode_build_settings_path) do |line|
+    matches = line.match(/DN_ROOT\=(.*)/)
+    return matches[1].strip if matches
+  end
+  raise "DN_ROOT not found in #{generated_xcode_build_settings_path}. Try deleting Generated.xcconfig, then run \"dn pub get\""
+end
+
+require File.expand_path(File.join('bin', 'podhelper'), dn_root)
+
+dartnative_ios_podfile_setup
+
+target 'Runner' do
+  use_frameworks!
+  # Pin to the Firebase iOS SDK version already in the local CocoaPods cache
+  # (awa_hymn / tharwa use it) so `pod install` never needs to clone
+  # firebase-ios-sdk from GitHub.
+  pod 'FirebaseCore', '12.18.0'
+  pod 'FirebaseCoreInternal', '12.18.0'
+  pod 'FirebaseCoreExtension', '12.18.0'
+  pod 'FirebaseCrashlytics', '12.18.0'
+  pod 'FirebaseMessaging', '12.18.0'
+  pod 'FirebaseInstallations', '12.18.0'
+  pod 'FirebaseSessions', '12.18.0'
+  pod 'FirebaseRemoteConfigInterop', '12.18.0'
+
+  dartnative_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  target 'RunnerTests' do
+    inherit! :search_paths
+  end
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    dartnative_additional_ios_build_settings(target)
+  end
+end
