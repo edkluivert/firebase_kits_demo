@@ -1,5 +1,5 @@
-// firebase_kits_demo: end-to-end check of firebase_auth_kit + firestore_kit
-// next to dartnative_firebase, against the real "awahymn" Firebase project.
+// firebase_kits_demo: firebase_auth_kit + firestore_kit + dartnative_firebase
+// running together against your own Firebase project (see README.md).
 //
 //   dn run -d <ios-simulator-id> --dart-define=FIREBASE_KITS_AUTORUN=1
 //

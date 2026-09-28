@@ -1,5 +1,5 @@
 name: firebase_kits_demo
-description: "End-to-end test app for firebase_auth_kit, firestore_kit and dartnative_firebase on the awahymn Firebase project."
+description: "Demo app: firebase_auth_kit, firestore_kit and dartnative_firebase running together against your own Firebase project."
 publish_to: 'none'
 version: 0.1.0+1
 

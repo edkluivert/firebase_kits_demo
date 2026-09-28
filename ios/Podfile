@@ -29,9 +29,9 @@ dartnative_ios_podfile_setup
 
 target 'Runner' do
   use_frameworks!
-  # Pin to the Firebase iOS SDK version already in the local CocoaPods cache
-  # (awa_hymn / tharwa use it) so `pod install` never needs to clone
-  # firebase-ios-sdk from GitHub.
+  # Pin the Firebase iOS SDK so `pod install` is reproducible and can reuse a
+  # version already in your CocoaPods cache instead of cloning firebase-ios-sdk
+  # from GitHub (a large download). Bump all eight together when you upgrade.
   pod 'FirebaseCore', '12.18.0'
   pod 'FirebaseCoreInternal', '12.18.0'
   pod 'FirebaseCoreExtension', '12.18.0'

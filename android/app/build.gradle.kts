@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.jitae.awa_hymn" // reuses the awahymn Android app registration
+        applicationId = "com.jitae.firebase_kits_demo" // register this package name in your Firebase project
         // You can update the following values to match your application needs.
         minSdk = dartnative.minSdkVersion
         targetSdk = dartnative.targetSdkVersion
