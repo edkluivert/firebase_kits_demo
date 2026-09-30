@@ -7,7 +7,7 @@
 // log to the console; the buttons cover the steps that need a person (Google
 // sign-in page, SMS code).
 import 'dart:async';
-import 'dart:io' show Platform;
+import 'dart:io' show ContentType, HttpServer, InternetAddress, Platform;
 
 import 'package:dartnative/dartnative.dart';
 import 'package:dartnative_firebase/dartnative_firebase.dart' as dn_firebase;
@@ -144,6 +144,42 @@ class _KitsDemoState extends State<KitsDemo> {
   Future<void> _runAutomatedSteps() async {
     final email = _emailController.text;
     const password = 'secret123';
+
+    await _run('dartnative_webview 1.0.1: custom-scheme redirect → onNavigationRequest',
+        () async {
+      // A loopback page that redirects to the deep link Firebase's handler ends
+      // on. dartnative_webview 1.0.0 surfaced that only as about:blank; 1.0.1
+      // offers it to onNavigationRequest, where the screen takes it.
+      const innerLink =
+          'https://example.firebaseapp.com/__/auth/handler?state=s1&code=c1';
+      final callback = 'https://example.firebaseapp.com/__/auth/callback'
+          '?authType=signInWithRedirect&link=${Uri.encodeQueryComponent(innerLink)}';
+      final deepLink = 'app-1-test-ios-abc://firebaseauth/link'
+          '?deep_link_id=${Uri.encodeQueryComponent(callback)}';
+      final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+      server.listen((req) {
+        req.response
+          ..headers.contentType = ContentType.html
+          ..write('<!doctype html><title>redirect</title>'
+              '<script>location.href="$deepLink";</script>redirecting…')
+          ..close();
+      });
+      try {
+        final result = await FirebaseAuthKit.webFlowPresenter!(
+          Uri.parse('http://127.0.0.1:${server.port}/start'),
+          isCallback: isFirebaseCallbackUrl,
+        ).timeout(const Duration(seconds: 20));
+        if (result == null) throw StateError('page dismissed without a callback');
+        if (result.scheme != 'app-1-test-ios-abc') {
+          throw StateError('expected the custom-scheme deep link, got $result');
+        }
+        final parsed = parseFirebaseCallback(result);
+        if (parsed.link != innerLink) throw StateError('parsed link ${parsed.link}');
+        return 'intercepted ${result.scheme}:// in onNavigationRequest, link parsed';
+      } finally {
+        await server.close(force: true);
+      }
+    });
 
     if (_auth.currentUser != null) {
       await _run('sign out previous session', () async {

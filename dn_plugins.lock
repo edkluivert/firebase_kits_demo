@@ -2,4 +2,4 @@
 # Commit it beside pubspec.lock. `dn pub upgrade` moves these within pubspec.yaml's constraints.
 dartnative_firebase: 1.0.0
 dartnative_secure_storage: 1.0.0
-dartnative_webview: 1.0.0
+dartnative_webview: 1.0.1
